@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI 첫걸음 · 첫 출근</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%A0%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <!-- 네온: 표제(Gowun Batang) · 테크 라벨(Orbitron) -->
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet" />
+  <!-- 공통 한글 본문: Pretendard -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+  <!-- 픽셀: Galmuri(한글 픽셀) + Press Start 2P(라틴) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css" />
+  <!-- 블루프린트: IBM Plex Sans KR + Space Grotesk · 픽셀 라틴: Press Start 2P -->
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600&family=Space+Grotesk:wght@500;700&family=Press+Start+2P&display=swap" rel="stylesheet" />
+  <!-- 사유의 방: 명조(Nanum Myeongjo) -->
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700&display=swap" rel="stylesheet" />
+  <!-- 페이퍼: 손글씨(개구/Gaegu) -->
+  <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- 배경: 별/그리드 캔버스 -->
+  <canvas id="bg-canvas"></canvas>
+  <div class="vignette"></div>
+
+  <!-- ================= SCENE 0 : 인트로(4테마 화면보호기) ================= -->
+  <section id="scene-intro" class="scene is-active" aria-label="인트로 — 화면보호기 테마를 고르세요">
+    <!-- 4분할 랜딩 -->
+    <div id="intro-grid" class="intro-grid" role="group" aria-label="화면보호기 테마 2종">
+      <button class="intro-cell" type="button" data-theme="snow" aria-label="함박눈 테마 선택">
+        <canvas class="intro-cell__cv"></canvas><span class="intro-cell__lb">함박눈</span>
+      </button>
+      <button class="intro-cell" type="button" data-theme="sakura" aria-label="벚꽃 테마 선택">
+        <canvas class="intro-cell__cv"></canvas><span class="intro-cell__lb">벚꽃</span>
+      </button>
+    </div>
+    <!-- 선택 후 전체화면(화면보호기) -->
+    <div id="intro-full" class="intro-full" tabindex="-1" aria-label="화면을 클릭하면 입장" hidden>
+      <canvas id="intro-full-cv" class="intro-full__cv"></canvas>
+      <button id="intro-back" class="intro-back" type="button">🎨 테마 고르기</button>
+      <p id="intro-enter" class="intro-enter">화면을 클릭하면 입장</p>
+    </div>
+  </section>
+
+  <!-- ================= SCENE 1 : 시작 (얇게 — 주인공 버튼 1개 + 유틸 아이콘 2개만) ================= -->
+  <section id="scene-start" class="scene">
+    <div class="start-utils">
+      <!-- 🎫 내 정보 — 코드 미등록 시 아이콘, 등록 후엔 같은 자리에 코드 뱃지("A반-07")로 전환 -->
+      <button id="code-btn" class="util-fab util-fab--code" type="button"
+              aria-haspopup="dialog" aria-expanded="false" aria-label="내 정보">
+        <span class="util-fab__icon">🎫</span>
+      </button>
+      <!-- 🎨 테마 -->
+      <button id="theme-btn" class="util-fab util-fab--theme" type="button"
+              aria-haspopup="dialog" aria-expanded="false" aria-label="테마">🎨</button>
+    </div>
+
+    <div class="start-inner">
+      <p class="start-kicker">AI FIRST STEP · 20강</p>
+      <h1 class="start-title">첫 출근</h1>
+      <p class="start-sub">오늘, 사무실에서 AI와 첫 인사를 나누는 20강</p>
+      <button id="enter-btn" class="enter-btn">
+        <span class="enter-btn__label">출근하기</span>
+        <span class="enter-btn__glow"></span>
+      </button>
+      <p class="start-hint">클릭하여 첫 출근을 시작합니다</p>
+
+      <!-- 실습실 입장 문 — Lv2 미만은 완전 미노출(hidden). 해금 시 practice.js가 등장시킨다. -->
+      <button id="practice-door" class="pdoor" type="button" hidden>
+        <span class="pdoor-ic">🧪</span>
+        <span class="pdoor-txt">
+          <span class="pdoor-t">진단실 입장</span>
+          <span class="pdoor-state">…</span>
+        </span>
+        <span class="pdoor-arrow">→</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- 🎫 내 정보 레이어 — 수강 코드 입력·안내·변경/제거. 모바일=바텀시트 / PC=중앙 패널.
+       새 기능은 여기(섹션 추가) 또는 방(씬) 내부에 — 입장 화면 상시 버튼 추가는 최후의 수단(docs/UX_원칙.md). -->
+  <div id="code-layer" class="settings-layer" hidden>
+    <div class="settings-layer__backdrop" id="code-backdrop"></div>
+    <div class="settings-layer__sheet" role="dialog" aria-modal="true" aria-label="내 정보">
+      <header class="settings-layer__head">
+        <span class="settings-layer__title">🎫 내 정보</span>
+        <button id="code-close" class="settings-layer__x" aria-label="닫기">✕</button>
+      </header>
+      <div class="settings-layer__body">
+        <section class="settings-sec">
+          <h3 class="settings-sec__t">수강 코드</h3>
+          <!-- 선택 사항 — 입력 시에만 학습 현황이 강사에게 전송된다 (telemetry.js) -->
+          <div class="scode" id="scode">
+            <div class="scode__row" id="scode-form">
+              <input id="scode-input" class="scode__input" type="text" maxlength="20"
+                     placeholder="수강 코드 (선택)" autocomplete="off" />
+              <button id="scode-set" class="scode__btn" type="button">등록</button>
+            </div>
+            <div class="scode__row" id="scode-active" hidden>
+              <span class="scode__badge">🎫 <b id="scode-current"></b></span>
+              <button id="scode-clear" class="scode__btn scode__btn--ghost" type="button">제거</button>
+            </div>
+            <p class="scode__note">코드를 입력하면 학습 진행 상황이 강사에게 전달됩니다</p>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🎨 테마 레이어 — 스킨 5종 + 진행 기록 초기화(하단, 작게). -->
+  <div id="theme-layer" class="settings-layer" hidden>
+    <div class="settings-layer__backdrop" id="theme-backdrop"></div>
+    <div class="settings-layer__sheet" role="dialog" aria-modal="true" aria-label="테마">
+      <header class="settings-layer__head">
+        <span class="settings-layer__title">🎨 테마</span>
+        <button id="theme-close" class="settings-layer__x" aria-label="닫기">✕</button>
+      </header>
+      <div class="settings-layer__body">
+        <section class="settings-sec">
+          <h3 class="settings-sec__t">스킨</h3>
+          <div class="skin-picker" id="skin-picker" role="group" aria-label="테마 선택">
+            <button class="skin-opt" type="button" data-skin="office" aria-pressed="true">
+              <span class="skin-sw skin-sw--office"></span><span class="skin-lb">오피스</span>
+            </button>
+            <button class="skin-opt" type="button" data-skin="paper" aria-pressed="false">
+              <span class="skin-sw skin-sw--paper"></span><span class="skin-lb">페이퍼</span>
+            </button>
+            <button class="skin-opt" type="button" data-skin="neon" aria-pressed="false">
+              <span class="skin-sw skin-sw--neon"></span><span class="skin-lb">네온</span>
+            </button>
+          </div>
+        </section>
+
+        <div class="settings-divider"></div>
+        <button id="theme-reset-btn" class="settings-reset-btn settings-reset-btn--small" type="button">진행 기록 초기화</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 입장 워프 오버레이 -->
+  <div id="warp" class="warp"></div>
+
+  <!-- ================= SCENE 2 : 사유의 방 ================= -->
+  <section id="scene-room" class="scene">
+    <!-- 게이미피케이션 HUD -->
+    <header class="hud">
+      <div class="hud__left">
+        <button id="to-start" class="hud__home" title="입장 화면으로">⌂ 입장</button>
+        <span class="hud__logo">첫 출근</span>
+      </div>
+      <div class="hud__right">
+        <span class="hud__rank" id="hud-rank" hidden></span>
+        <div class="hud__stat">
+          <span class="hud__label">발견한 강의</span>
+          <span class="hud__value"><span id="found-count">0</span> / 20</span>
+        </div>
+        <div class="hud__xp">
+          <div class="hud__xp-bar"><span id="xp-fill"></span></div>
+          <span class="hud__xp-label">탐험도 <span id="xp-pct">0</span>%</span>
+        </div>
+        <button id="toc-btn" class="hud__reset hud__toc" title="전체 목차 · 핵심 훑기">☰</button>
+        <button id="reset-progress" class="hud__reset" title="진행도 초기화">↺</button>
+      </div>
+    </header>
+
+    <div class="room-inner">
+      <p class="room-guide" id="room-guide">구역 하나를 둘러보세요</p>
+      <div id="boxes" class="boxes"><!-- 상자 4개 JS 생성 --></div>
+    </div>
+
+    <!-- 카드 부채꼴 오버레이 -->
+    <div id="fan-overlay" class="fan-overlay">
+      <button class="fan-close" id="fan-close">✕ 상자 닫기</button>
+      <p class="fan-title" id="fan-title"></p>
+      <div id="fan-cards" class="fan-cards"><!-- 카드 5개 JS 생성 --></div>
+      <p class="fan-hint">카드를 선택해 강의실로 입장</p>
+    </div>
+  </section>
+
+  <!-- ================= SCENE 3 : 강의 슬라이드 ================= -->
+  <section id="scene-slides" class="scene">
+    <header class="slide-topbar">
+      <button id="slide-exit" class="slide-exit">← 첫 출근</button>
+      <span id="slide-lecture-name" class="slide-lecture-name"></span>
+      <span id="slide-counter" class="slide-counter">1 / 1</span>
+    </header>
+    <div class="slide-progress"><span id="slide-progress-fill"></span></div>
+
+    <div id="slide-stage" class="slide-stage"><!-- 슬라이드 JS 렌더 --></div>
+
+    <div class="slide-nav">
+      <button id="slide-prev" class="slide-btn">◀ 이전</button>
+      <div id="slide-dots" class="slide-dots"></div>
+      <button id="slide-next" class="slide-btn">다음 ▶</button>
+    </div>
+  </section>
+
+  <!-- ================= SCENE 4 : 실습실 (목업) ================= -->
+  <section id="scene-practice" class="scene"><!-- practice.js 렌더 --></section>
+
+  <!-- scene 밖(body 직계)에 둔다: .scene 은 transform 전환이 걸려 있어
+       내부에 두면 position:fixed 의 컨테이닝 블록이 씬으로 바뀌어 뷰포트 기준 고정이 깨진다 -->
+  <div id="rotate-hint" class="rotate-hint" hidden>
+    <span class="rotate-hint__icon">↻</span>
+    <span class="rotate-hint__text">기기를 <b>가로</b>로 돌리면 더 넓게 볼 수 있어요</span>
+    <button id="rotate-hint-close" class="rotate-hint__close" aria-label="닫기">✕</button>
+  </div>
+
+  <!-- 전체 목차 · 핵심 훑기 오버레이 (내용은 main.js가 렌더) -->
+  <div id="toc" class="toc" hidden>
+    <div class="toc__box">
+      <header class="toc__head">
+        <span class="toc__title">전체 목차</span>
+        <button id="toc-core" class="toc__core" aria-pressed="false">⚡ 핵심 훑기</button>
+        <button id="toc-close" class="toc__x" title="닫기">✕</button>
+      </header>
+      <div id="toc-list" class="toc__list"></div>
+    </div>
+  </div>
+
+  <!-- 완주 축하 오버레이 -->
+  <div id="celebrate" class="celebrate" hidden>
+    <canvas id="celebrate-cv" class="celebrate__cv"></canvas>
+    <div class="celebrate__inner">
+      <p class="celebrate__kicker">AI 첫걸음 20강 · 완주</p>
+      <p class="celebrate__title" id="celebrate-title">첫 출근을 마쳤습니다.</p>
+      <p class="celebrate__sub" id="celebrate-sub">20강 완주</p>
+      <div class="celebrate__btns">
+        <button id="celebrate-up" class="celebrate__up">⬆ 업그레이드</button>
+        <button id="celebrate-close" class="celebrate__close">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 스크립트: 순서 중요 -->
+  <script src="js/site-config.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/room.js"></script>
+  <script src="js/slides.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/intro.js"></script>
+  <script src="js/telemetry.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

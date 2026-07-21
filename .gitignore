@@ -1,0 +1,17 @@
+.DS_Store
+Thumbs.db
+node_modules/
+*.log
+.claude/
+server_session.txt
+__pycache__/
+
+*.lnk
+
+err*.txt
+
+# 서버 키 (Netlify env와 동일 — 절대 커밋 금지)
+.env
+
+# Local Netlify folder
+.netlify
