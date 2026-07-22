@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="t d">
+  <title id="t">첫걸음에서 다음으로 — 로비부터 AX까지 오르는 길</title>
+  <desc id="d">왼쪽부터 오른쪽으로 점점 높아지는 네 계단 — 로비(알아차리기), 미팅룸(대화하기), 내 책상(써먹기), 보안 게이트(안전하게). 마지막 계단 끝에서 점선으로 갈라지는 새 길이 AX(일하는 방식 바꾸기)로 이어진다. 도구를 익혔다면 다음은 방식이라는 문구로 마무리된다.</desc>
+  <defs>
+    <marker id="mPath" markerWidth="11" markerHeight="11" refX="7.5" refY="3.4" orient="auto"><path d="M0,0 L7.5,3.4 L0,6.8" fill="#B45309"/></marker>
+    <style><![CDATA[
+      text{font-family:'Pretendard','Malgun Gothic','Apple SD Gothic Neo',system-ui,sans-serif;}
+      .tt{fill:#24211C;font-weight:700;} .ts{fill:#7A736A;}
+      .lbl{fill:#24211C;font-weight:700;} .cap{fill:#7A736A;}
+      .path{fill:none;stroke:#7A736A;stroke-width:2;stroke-dasharray:1 8;stroke-linecap:round;}
+      .pathNext{fill:none;stroke:#B45309;stroke-width:2.4;stroke-dasharray:6 6;}
+    ]]></style>
+  </defs>
+
+  <rect x="0" y="0" width="1280" height="720" rx="28" fill="#FAF7F2"/>
+  <text x="48" y="64" font-size="30" class="tt">첫걸음에서 다음으로</text>
+  <text x="50" y="96" font-size="16" class="ts">스무 걸음을 오르면, 갈라지는 새 길이 보인다</text>
+
+  <!-- 계단 4개 -->
+  <rect x="90" y="460" width="200" height="120" rx="14" fill="#0E7490" fill-opacity=".12" stroke="#0E7490" stroke-width="2.4"/>
+  <text x="190" y="500" font-size="30" text-anchor="middle">🏢</text>
+  <text x="190" y="530" font-size="17" text-anchor="middle" font-weight="700" fill="#0E7490">로비</text>
+  <text x="190" y="598" font-size="13.5" text-anchor="middle" class="cap">알아차리기</text>
+
+  <rect x="320" y="400" width="200" height="180" rx="14" fill="#7C3AED" fill-opacity=".12" stroke="#7C3AED" stroke-width="2.4"/>
+  <text x="420" y="440" font-size="30" text-anchor="middle">💬</text>
+  <text x="420" y="470" font-size="17" text-anchor="middle" font-weight="700" fill="#7C3AED">미팅룸</text>
+  <text x="420" y="598" font-size="13.5" text-anchor="middle" class="cap">대화하기</text>
+
+  <rect x="550" y="340" width="200" height="240" rx="14" fill="#DB2777" fill-opacity=".12" stroke="#DB2777" stroke-width="2.4"/>
+  <text x="650" y="380" font-size="30" text-anchor="middle">💻</text>
+  <text x="650" y="410" font-size="17" text-anchor="middle" font-weight="700" fill="#DB2777">내 책상</text>
+  <text x="650" y="598" font-size="13.5" text-anchor="middle" class="cap">써먹기</text>
+
+  <rect x="780" y="280" width="200" height="300" rx="14" fill="#047857" fill-opacity=".12" stroke="#047857" stroke-width="2.4"/>
+  <text x="880" y="320" font-size="30" text-anchor="middle">🔐</text>
+  <text x="880" y="350" font-size="17" text-anchor="middle" font-weight="700" fill="#047857">보안 게이트</text>
+  <text x="880" y="598" font-size="13.5" text-anchor="middle" class="cap">안전하게</text>
+
+  <!-- 오르는 점선 경로 + 계단 정점 마커 -->
+  <path d="M190 460 L420 400 L650 340 L880 280" class="path"/>
+  <circle cx="190" cy="460" r="7" fill="#0E7490"/>
+  <circle cx="420" cy="400" r="7" fill="#7C3AED"/>
+  <circle cx="650" cy="340" r="7" fill="#DB2777"/>
+  <circle cx="880" cy="280" r="7" fill="#047857"/>
+
+  <!-- 갈라지는 새 길 -->
+  <path d="M880 280 C 930 240, 950 210, 985 190" class="pathNext" marker-end="url(#mPath)"/>
+
+  <!-- AX 노드 -->
+  <rect x="990" y="140" width="230" height="100" rx="50" fill="#FFFFFF" stroke="#B45309" stroke-width="2.4" stroke-dasharray="7 6"/>
+  <text x="1065" y="185" font-size="26" text-anchor="middle">🚀</text>
+  <text x="1140" y="185" font-size="19" text-anchor="middle" font-weight="700" fill="#B45309">AX</text>
+  <text x="1105" y="220" font-size="12" text-anchor="middle" class="cap">일하는 방식 바꾸기</text>
+
+  <!-- 보조 문구 -->
+  <rect x="230" y="606" width="820" height="66" rx="18" fill="#FFFFFF" stroke="#EAE4DA" stroke-width="1.6"/>
+  <text x="640" y="646" font-size="19" text-anchor="middle" font-weight="700" fill="#0E7490">도구를 익혔다면, 다음은 방식이다</text>
+</svg>
