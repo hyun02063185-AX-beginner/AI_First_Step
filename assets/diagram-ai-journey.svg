@@ -3,13 +3,13 @@
   <title id="t">첫걸음에서 다음으로 — 로비부터 AX까지 오르는 길</title>
   <desc id="d">왼쪽부터 오른쪽으로 점점 높아지는 네 계단 — 로비(알아차리기), 미팅룸(대화하기), 내 책상(써먹기), 보안 게이트(안전하게). 마지막 계단 끝에서 점선으로 갈라지는 새 길이 AX(일하는 방식 바꾸기)로 이어진다. 도구를 익혔다면 다음은 방식이라는 문구로 마무리된다.</desc>
   <defs>
-    <marker id="mPath" markerWidth="11" markerHeight="11" refX="7.5" refY="3.4" orient="auto"><path d="M0,0 L7.5,3.4 L0,6.8" fill="#B45309"/></marker>
+    <marker id="mPath" markerWidth="11" markerHeight="11" refX="7.5" refY="3.4" orient="auto"><path d="M0,0 L7.5,3.4 L0,6.8" fill="#D8B27A"/></marker>
     <style><![CDATA[
       text{font-family:'Pretendard','Malgun Gothic','Apple SD Gothic Neo',system-ui,sans-serif;}
       .tt{fill:#24211C;font-weight:700;} .ts{fill:#7A736A;}
       .lbl{fill:#24211C;font-weight:700;} .cap{fill:#7A736A;}
       .path{fill:none;stroke:#7A736A;stroke-width:2;stroke-dasharray:1 8;stroke-linecap:round;}
-      .pathNext{fill:none;stroke:#B45309;stroke-width:2.4;stroke-dasharray:6 6;}
+      .pathNext{fill:none;stroke:#D8B27A;stroke-width:2.4;stroke-dasharray:6 6;}
     ]]></style>
   </defs>
 
@@ -49,9 +49,9 @@
   <path d="M880 280 C 930 240, 950 210, 985 190" class="pathNext" marker-end="url(#mPath)"/>
 
   <!-- AX 노드 -->
-  <rect x="990" y="140" width="230" height="100" rx="50" fill="#FFFFFF" stroke="#B45309" stroke-width="2.4" stroke-dasharray="7 6"/>
+  <rect x="990" y="140" width="230" height="100" rx="50" fill="#FFFFFF" stroke="#D8B27A" stroke-width="2.4" stroke-dasharray="7 6"/>
   <text x="1065" y="185" font-size="26" text-anchor="middle">🚀</text>
-  <text x="1140" y="185" font-size="19" text-anchor="middle" font-weight="700" fill="#B45309">AX</text>
+  <text x="1140" y="185" font-size="19" text-anchor="middle" font-weight="700" fill="#D8B27A">AX</text>
   <text x="1105" y="220" font-size="12" text-anchor="middle" class="cap">일하는 방식 바꾸기</text>
 
   <!-- 보조 문구 -->
