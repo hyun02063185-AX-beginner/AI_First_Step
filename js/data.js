@@ -970,3 +970,10 @@ function placeholderDeck(num, title, subtitle) {
     { type: "closing", title: "정리 한 줄", teaser: "다음 강의를 향한 티저 문장을 여기에" }
   ];
 }
+
+/* Node 테스트 하네스(tests/content-lint.test.js)용 최소 export 심.
+   브라우저에선 `module`이 없어 이 블록 자체가 실행되지 않는다 — 브라우저 동작에 0 영향.
+   (엔진_경계.md 관점 참고: order/하네스_구축_지시서.md — 본진 이식 시 동일 패턴 필요.) */
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = { CURRICULUM, placeholderDeck };
+}

@@ -1,0 +1,9 @@
+{
+  "name": "ai-first-step",
+  "private": true,
+  "version": "1.0.0",
+  "description": "AI 첫걸음 20강 — 첫 출근 (정적 사이트, 빌드 없음). 테스트만 Node 내장 test runner 사용.",
+  "scripts": {
+    "test": "node --test"
+  }
+}
