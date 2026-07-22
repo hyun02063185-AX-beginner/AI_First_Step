@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="t d">
+  <title id="t">'그럴듯한 다음' 고르기 — 오늘 점심은 무엇일까</title>
+  <desc id="d">말풍선 "오늘 점심은 빈칸"에서 후보 세 개가 갈라진다. 김치찌개 62퍼센트가 굵게 선택되고, 파스타 27퍼센트, 우주선 0.1퍼센트는 흐리고 살짝 웃기게 표시된다. 가장 그럴듯한 다음 말을 고르는 기계 — 그게 전부이자 놀라움의 시작이다.</desc>
+  <defs>
+    <marker id="brOn" markerWidth="12" markerHeight="12" refX="8" refY="3.8" orient="auto"><path d="M0,0 L8,3.8 L0,7.6 Z" fill="#DB2777"/></marker>
+    <marker id="br" markerWidth="11" markerHeight="11" refX="7.5" refY="3.4" orient="auto"><path d="M0,0 L7.5,3.4 L0,6.8 Z" fill="#0E7490"/></marker>
+    <style><![CDATA[
+      text{font-family:'Pretendard','Malgun Gothic','Apple SD Gothic Neo',system-ui,sans-serif;}
+      .tt{fill:#24211C;font-weight:700;} .ts{fill:#7A736A;}
+      .bubble{fill:#FFFFFF;stroke:#0E7490;stroke-width:2;}
+      .lbl{fill:#24211C;font-weight:700;} .sub{fill:#7A736A;}
+      .cand{fill:#FFFFFF;stroke:#EAE4DA;stroke-width:1.6;}
+      .candOn{fill:#FFF3F8;stroke:#DB2777;stroke-width:2.6;}
+      .branch{fill:none;stroke:#0E7490;stroke-width:2.2;}
+      .branchOn{fill:none;stroke:#DB2777;stroke-width:3.4;}
+    ]]></style>
+  </defs>
+
+  <rect x="0" y="0" width="1280" height="720" rx="28" fill="#FAF7F2"/>
+  <text x="48" y="64" font-size="30" class="tt">'그럴듯한 다음' 고르기</text>
+  <text x="50" y="96" font-size="16" class="ts">말을 이을 때마다, 가장 그럴듯한 다음 조각을 고른다</text>
+
+  <!-- 말풍선 -->
+  <rect x="90" y="270" width="430" height="130" rx="22" class="bubble"/>
+  <path d="M200 400 L 180 448 L 250 402 Z" fill="#FFFFFF" stroke="#0E7490" stroke-width="2"/>
+  <text x="128" y="326" font-size="22" class="lbl">"오늘 점심은</text>
+  <text x="128" y="364" font-size="22" class="lbl"><tspan fill="#0E7490">___</tspan> "</text>
+
+  <!-- 가지 3개 -->
+  <path d="M520 300 C 610 250, 660 232, 726 224" class="branchOn" marker-end="url(#brOn)"/>
+  <path d="M520 336 C 620 336, 670 336, 726 336" class="branch" marker-end="url(#br)"/>
+  <path d="M520 372 C 610 420, 660 440, 726 448" class="branch" opacity=".4" marker-end="url(#br)"/>
+
+  <!-- 후보 1: 선택됨 -->
+  <rect x="732" y="182" width="330" height="80" rx="14" class="candOn"/>
+  <text x="762" y="218" font-size="22" fill="#DB2777" font-weight="700">김치찌개</text>
+  <text x="762" y="246" font-size="14.5" class="sub">확률 <tspan fill="#DB2777" font-weight="700">62%</tspan> — ✓ 이게 선택된다</text>
+
+  <!-- 후보 2 -->
+  <rect x="732" y="300" width="330" height="72" rx="14" class="cand"/>
+  <text x="762" y="332" font-size="19" class="lbl">파스타</text>
+  <text x="762" y="358" font-size="14" class="sub">확률 27%</text>
+
+  <!-- 후보 3: 흐리고 살짝 웃기게 -->
+  <g opacity=".42">
+    <rect x="732" y="412" width="330" height="72" rx="14" class="cand"/>
+    <text x="762" y="444" font-size="19" class="lbl">🚀 우주선</text>
+    <text x="762" y="470" font-size="14" class="sub">확률 0.1% (설마요)</text>
+  </g>
+
+  <!-- 핵심 포인트 -->
+  <text x="270" y="480" font-size="14.5" class="ts">정답을 아는 게 아니라</text>
+  <text x="270" y="502" font-size="14.5" class="ts"><tspan fill="#0E7490" font-weight="700">가장 자연스러운 다음을 고를 뿐</tspan></text>
+
+  <!-- 보조 문구 -->
+  <rect x="130" y="606" width="1020" height="66" rx="18" fill="#FFFFFF" stroke="#EAE4DA" stroke-width="1.6"/>
+  <text x="640" y="634" font-size="18" text-anchor="middle" class="lbl">가장 그럴듯한 다음 말을 고르는 기계 — <tspan fill="#DB2777">그게 전부이자</tspan></text>
+  <text x="640" y="659" font-size="14.5" text-anchor="middle" class="sub">놀라움의 시작</text>
+</svg>
