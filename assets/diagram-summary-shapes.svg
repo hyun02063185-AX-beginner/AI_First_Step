@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="t d">
+  <title id="t">요약은 모양이 여러 개 — 긴 자료에서 뻗어나가는 네 가지 결과</title>
+  <desc id="d">긴 자료 한 건에서 네 가지 요약 모양이 뻗어나간다 — 3줄 핵심, 결정·담당·기한 표, 한 문단 브리핑, 질문 5개로 뽑기. 무엇으로 줄일지 정해주면 요약이 달라진다는 문구로 마무리된다.</desc>
+  <defs>
+    <marker id="mc" markerWidth="11" markerHeight="11" refX="7.5" refY="3.4" orient="auto"><path d="M0,0 L7.5,3.4 L0,6.8" fill="#0E7490"/></marker>
+    <style><![CDATA[
+      text{font-family:'Pretendard','Malgun Gothic','Apple SD Gothic Neo',system-ui,sans-serif;}
+      .tt{fill:#24211C;font-weight:700;} .ts{fill:#7A736A;}
+      .src{fill:#FFFFFF;stroke:#0E7490;stroke-width:2.4;}
+      .card{fill:#FFFFFF;stroke:#EAE4DA;stroke-width:1.8;}
+      .lbl{fill:#24211C;font-weight:700;} .sub{fill:#7A736A;}
+      .flow{fill:none;stroke:#0E7490;stroke-width:2.2;}
+      .bar{fill:#0E7490;} .barAlt{fill:#DB2777;} .barAlt2{fill:#7C3AED;}
+    ]]></style>
+  </defs>
+
+  <rect x="0" y="0" width="1280" height="720" rx="28" fill="#FAF7F2"/>
+  <text x="48" y="64" font-size="30" class="tt">요약은 모양이 여러 개</text>
+  <text x="50" y="96" font-size="16" class="ts">같은 자료도, 무엇으로 줄이느냐가 다르다</text>
+
+  <!-- 원본 자료(중앙 왼쪽) -->
+  <rect x="90" y="200" width="250" height="330" rx="20" class="src"/>
+  <text x="215" y="300" font-size="56" text-anchor="middle">📄</text>
+  <text x="215" y="360" font-size="20" text-anchor="middle" font-weight="700" fill="#0E7490">긴 자료</text>
+  <text x="215" y="386" font-size="13" text-anchor="middle" class="sub">회의록·메일·보고서</text>
+  <text x="215" y="480" font-size="13.5" text-anchor="middle" class="sub">무엇으로</text>
+  <text x="215" y="500" font-size="13.5" text-anchor="middle" class="sub">줄일까?</text>
+
+  <!-- 연결선 4개 -->
+  <path d="M340 260 C 400 220, 420 210, 460 200" class="flow" marker-end="url(#mc)"/>
+  <path d="M340 320 C 420 300, 440 250, 860 210" class="flow" marker-end="url(#mc)"/>
+  <path d="M340 420 C 420 440, 440 480, 860 470" class="flow" marker-end="url(#mc)"/>
+  <path d="M340 480 C 400 500, 420 510, 460 520" class="flow" marker-end="url(#mc)"/>
+
+  <!-- 카드 1: 3줄 핵심 -->
+  <rect x="460" y="160" width="340" height="150" rx="16" class="card"/>
+  <rect x="486" y="188" width="180" height="10" rx="5" class="bar"/>
+  <rect x="486" y="208" width="140" height="10" rx="5" class="bar" opacity=".7"/>
+  <rect x="486" y="228" width="160" height="10" rx="5" class="bar" opacity=".45"/>
+  <text x="486" y="268" font-size="19" font-weight="700" fill="#24211C">3줄 핵심</text>
+  <text x="486" y="290" font-size="13" class="sub">빠르게 파악할 때</text>
+
+  <!-- 카드 2: 표 -->
+  <rect x="860" y="160" width="340" height="150" rx="16" class="card"/>
+  <text x="886" y="192" font-size="12.5" font-weight="700" fill="#0E7490">결정</text>
+  <text x="960" y="192" font-size="12.5" font-weight="700" fill="#0E7490">담당</text>
+  <text x="1040" y="192" font-size="12.5" font-weight="700" fill="#0E7490">기한</text>
+  <line x1="886" y1="202" x2="1166" y2="202" stroke="#EAE4DA" stroke-width="1.4"/>
+  <line x1="886" y1="226" x2="1166" y2="226" stroke="#EAE4DA" stroke-width="1.4"/>
+  <rect x="886" y="208" width="60" height="10" rx="3" fill="#EAE4DA"/>
+  <rect x="960" y="208" width="50" height="10" rx="3" fill="#EAE4DA"/>
+  <rect x="1040" y="208" width="55" height="10" rx="3" fill="#EAE4DA"/>
+  <rect x="886" y="232" width="60" height="10" rx="3" fill="#EAE4DA"/>
+  <rect x="960" y="232" width="50" height="10" rx="3" fill="#EAE4DA"/>
+  <rect x="1040" y="232" width="55" height="10" rx="3" fill="#EAE4DA"/>
+  <text x="886" y="270" font-size="19" font-weight="700" fill="#24211C">표로</text>
+  <text x="886" y="292" font-size="13" class="sub">회의록에 최적</text>
+
+  <!-- 카드 3: 한 문단 브리핑 -->
+  <rect x="460" y="420" width="340" height="150" rx="16" class="card"/>
+  <rect x="486" y="448" width="288" height="8" rx="4" fill="#EAE4DA"/>
+  <rect x="486" y="464" width="288" height="8" rx="4" fill="#EAE4DA"/>
+  <rect x="486" y="480" width="200" height="8" rx="4" fill="#EAE4DA"/>
+  <text x="486" y="528" font-size="19" font-weight="700" fill="#24211C">한 문단 브리핑</text>
+  <text x="486" y="550" font-size="13" class="sub">배경 파악용</text>
+
+  <!-- 카드 4: 질문 5개로 뽑기 -->
+  <rect x="860" y="420" width="340" height="150" rx="16" class="card"/>
+  <text x="886" y="454" font-size="16" fill="#DB2777" font-weight="700">❓ ❓ ❓ ❓ ❓</text>
+  <text x="886" y="528" font-size="19" font-weight="700" fill="#24211C">질문 5개로 뽑기</text>
+  <text x="886" y="550" font-size="13" class="sub">내 할 일 찾을 때</text>
+
+  <!-- 보조 문구 -->
+  <rect x="230" y="606" width="820" height="66" rx="18" fill="#FFFFFF" stroke="#EAE4DA" stroke-width="1.6"/>
+  <text x="640" y="646" font-size="19" text-anchor="middle" font-weight="700" fill="#0E7490">무엇으로 줄일지 정해주면, 요약이 달라진다</text>
+</svg>
