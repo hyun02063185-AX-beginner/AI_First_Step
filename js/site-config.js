@@ -37,5 +37,14 @@ const SITE_CONFIG = {
   rankTitles: ["", "인턴", "신입", "주임", "선임", "에이스"],
   // 20강 완주 축하 오버레이 문구(본진 기본 "훌륭히 완주하셨습니다." 대신)
   completionTitle: "첫 출근을 마쳤습니다.",
-  completionTitleMastered: "이제 이 사무실의 에이스입니다."
+  completionTitleMastered: "이제 이 사무실의 에이스입니다.",
+
+  // 페르소나 레지스트리 — ?variant=<키>로 전환(main.js가 파싱, slides.js가 합성).
+  // default는 URL에 안 붙는 상태(기본판=직장인). badge=HUD에 표시할 한 글자(없으면 뱃지 없음).
+  // docs/페르소나_작성_가이드.md 참고 — 이식 대상(order/페르소나_variant_기반_지시서.md §⑥).
+  personas: {
+    default: { label: "직장인", badge: null },
+    student: { label: "대학생", badge: "S" },
+    owner:   { label: "자영업", badge: "O" }
+  }
 };

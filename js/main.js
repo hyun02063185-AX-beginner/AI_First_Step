@@ -18,12 +18,30 @@
   })();
   window.__isMobile = IS_MOBILE;   // intro.js 등에서 공유
 
-  /* ---------- 콘텐츠 variant — 경험판 스위치 ----------
-     ?variant=personal → 7·8강처럼 slidesPersonal이 있는 강의는 경험판으로 렌더(slides.js가 분기).
+  /* ---------- 콘텐츠 variant — 경험판 스위치 + 페르소나 스위치 ----------
+     ?variant=personal → (기존) 7·8강처럼 slidesPersonal이 있는 강의는 경험판으로 렌더.
+     ?variant=<페르소나키> → (신규) SITE_CONFIG.personas에 등록된 키면, 강의별
+       slidesVariants[키]로 기본판 슬라이드 일부(인덱스 단위)를 오버라이드해 합성 렌더.
+       등록되지 않은 값은 조용히 기본판(오류 없음). 같은 ?variant= 파라미터를 공유하되
+       "personal"은 예약어라 페르소나 키로 등록할 수 없다(레지스트리에 없으므로 자연히 배제).
      해시 라우팅은 search를 건드리지 않으므로 세션 동안 자연 유지.
-     localStorage에 저장하지 않는다 — 링크로만 제어(평소 배포 링크는 항상 범용판). */
-  const VARIANT_PERSONAL = /[?&]variant=personal(?:&|$)/.test(location.search);
-  window.__variantPersonal = VARIANT_PERSONAL;   // slides.js 로드 분기에서 참조
+     localStorage에 저장하지 않는다 — 링크로만 제어(평소 배포 링크는 항상 기본판). */
+  const VARIANT_RAW = (location.search.match(/[?&]variant=([^&]+)/) || [])[1] || "";
+  const VARIANT_PERSONAL = VARIANT_RAW === "personal";
+  window.__variantPersonal = VARIANT_PERSONAL;   // slides.js 로드 분기에서 참조(기존)
+  const PERSONA_KEY = (VARIANT_RAW && !VARIANT_PERSONAL && SITE_CONFIG.personas && SITE_CONFIG.personas[VARIANT_RAW])
+    ? VARIANT_RAW : "default";
+  window.__persona = PERSONA_KEY;                // slides.js 합성 로직·HUD 뱃지·텔레메트리가 참조(신규)
+
+  /* 강의의 "실제 렌더용 슬라이드"를 계산 — 페르소나 오버라이드를 base 위에 합성한다.
+     오버라이드 단위 = 슬라이드 인덱스(0-base, docs/페르소나_작성_가이드.md 참고).
+     기본판 슬라이드 배열/객체는 절대 변형하지 않는다(항상 새 배열 반환 또는 base 그대로). */
+  function resolveSlides(lecture) {
+    const base = (VARIANT_PERSONAL && lecture.slidesPersonal) ? lecture.slidesPersonal : (lecture.slides || []);
+    const overrideMap = (PERSONA_KEY !== "default" && lecture.slidesVariants) ? lecture.slidesVariants[PERSONA_KEY] : null;
+    if (!overrideMap) return base;
+    return base.map((s, i) => overrideMap[i] || s);
+  }
 
   /* ---------- 스킨 해금 순서 (Lv 포상) ----------
      모바일: 전부 · PC: Lv별로 SITE_CONFIG.availableSkins 순서대로 하나씩(0번째=defaultSkin은 Lv1부터).
@@ -378,6 +396,7 @@
     Progress, Skin, goScene, updateHUD, TOTAL, Router, findLecture,
     Level,                       // 실습실(practice.js)이 Lv를 읽기만 (수정 안 함)
     Resume,                      // 이어보기 — slides.js가 저장, room.js가 카드 표시
+    resolveSlides,                // 페르소나 오버라이드 합성 — slides.js가 렌더에 사용
     accent: "#22d3ee"
   };
   window.Progress = Progress;
@@ -476,7 +495,7 @@
   const tocEsc = t => String(t == null ? "" : t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   function tocKeyLines(lec) {
     const out = [];
-    (lec.slides || []).forEach((s, i) => {
+    (resolveSlides(lec) || []).forEach((s, i) => {
       if (s.type === "big" && s.word) out.push({ i, t: s.word });
       else if (s.type === "quote" && s.text) out.push({ i, t: s.text });
       else if (s.type === "closing" && s.title) out.push({ i, t: s.title });
@@ -705,6 +724,18 @@
         const b = document.createElement("span");
         b.className = "hud__vp"; b.textContent = "P"; b.title = "경험판(personal) 모드";
         hudLeft.appendChild(b);
+      }
+    }
+    // 페르소나 모드 표시 — 같은 뱃지 관례를 재사용, 페르소나별 글자(레지스트리의 badge)
+    if (PERSONA_KEY !== "default") {
+      const persona = SITE_CONFIG.personas && SITE_CONFIG.personas[PERSONA_KEY];
+      if (persona && persona.badge) {
+        const hudLeft = document.querySelector(".hud__left");
+        if (hudLeft) {
+          const b = document.createElement("span");
+          b.className = "hud__vp"; b.textContent = persona.badge; b.title = "페르소나: " + persona.label;
+          hudLeft.appendChild(b);
+        }
       }
     }
     App.updateHUD = updateHUD;      // room.js가 참조하도록 확정

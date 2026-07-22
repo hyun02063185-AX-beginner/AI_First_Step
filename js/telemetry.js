@@ -56,10 +56,13 @@
   function sessionStart() {
     if (!getCode()) return;
     try { if (sessionStorage.getItem("ax_session_sent")) return; sessionStorage.setItem("ax_session_sent", "1"); } catch (e) {}
-    send("session_start", {
+    const payload = {
       skin: document.documentElement.dataset.skin || "",
       viewMode: window.__isMobile ? "mobile" : "pc"
-    });
+    };
+    // 페르소나 variant — 있을 때만 payload에 추가(대시보드에서 "어느 판" 구분용, 화이트리스트 영향 없음)
+    if (window.__persona && window.__persona !== "default") payload.variant = window.__persona;
+    send("session_start", payload);
   }
   function lectureComplete(lectureId) {
     const k = "lec:" + lectureId;
