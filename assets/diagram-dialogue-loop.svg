@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="t d">
+  <title id="t">자판기 vs 대화 — AI는 주고받는 상대</title>
+  <desc id="d">왼쪽은 질문, 답, 끝으로 이어지는 흐린 일직선에 X 표시가 있어 자판기가 아님을 보여준다. 오른쪽은 묻는다, 받는다, 고쳐 말한다(더 짧게·표로), 다시 받는다가 순환하는 루프이고, 마지막 화살표에는 마음에 들 때까지 돌아간다는 표시가 있다. 하단 문구: AI는 자판기가 아니라 대화 상대다.</desc>
+  <defs>
+    <marker id="mg" markerWidth="10" markerHeight="10" refX="6.5" refY="3" orient="auto"><path d="M0,0 L6.5,3 L0,6" fill="#B9B2A6"/></marker>
+    <marker id="mc" markerWidth="11" markerHeight="11" refX="7.5" refY="3.4" orient="auto"><path d="M0,0 L7.5,3.4 L0,6.8" fill="#0E7490"/></marker>
+    <marker id="mp" markerWidth="12" markerHeight="12" refX="8" refY="3.8" orient="auto"><path d="M0,0 L8,3.8 L0,7.6" fill="#DB2777"/></marker>
+    <style><![CDATA[
+      text{font-family:'Pretendard','Malgun Gothic','Apple SD Gothic Neo',system-ui,sans-serif;}
+      .tt{fill:#24211C;font-weight:700;} .ts{fill:#7A736A;}
+      .badge{fill:#EAE4DA;} .badgeTxt{fill:#7A736A;font-weight:700;}
+      .badgeOn{fill:#0E7490;} .badgeOnTxt{fill:#FFFFFF;font-weight:700;}
+      .deadNode{fill:#F1EEE7;stroke:#D8D2C6;stroke-width:1.8;}
+      .deadTxt{fill:#9A9284;font-weight:700;}
+      .deadLine{stroke:#C7C0B3;stroke-width:2;}
+      .liveNode{fill:#FFFFFF;stroke:#0E7490;stroke-width:2.2;}
+      .liveTxt{fill:#24211C;font-weight:700;} .liveSub{fill:#7A736A;}
+      .loopArrow{fill:none;stroke:#0E7490;stroke-width:2.6;}
+      .closeArrow{fill:none;stroke:#DB2777;stroke-width:3.2;}
+    ]]></style>
+  </defs>
+
+  <rect x="0" y="0" width="1280" height="720" rx="28" fill="#FAF7F2"/>
+  <text x="48" y="64" font-size="30" class="tt">자판기 vs 대화</text>
+  <text x="50" y="96" font-size="16" class="ts">한 번에 안 되면, 다시 물으면 된다</text>
+
+  <!-- 왼쪽: 자판기라면(흐린 일직선) -->
+  <rect x="96" y="150" width="150" height="38" rx="19" class="badge"/>
+  <text x="171" y="175" font-size="15" text-anchor="middle" class="badgeTxt">자판기라면</text>
+
+  <g opacity=".55">
+    <rect x="96" y="222" width="240" height="66" rx="14" class="deadNode"/>
+    <text x="216" y="262" font-size="19" text-anchor="middle" class="deadTxt">질문</text>
+    <line x1="216" y1="288" x2="216" y2="326" class="deadLine" marker-end="url(#mg)"/>
+
+    <rect x="96" y="334" width="240" height="66" rx="14" class="deadNode"/>
+    <text x="216" y="374" font-size="19" text-anchor="middle" class="deadTxt">답</text>
+    <line x1="216" y1="400" x2="216" y2="438" class="deadLine" marker-end="url(#mg)"/>
+
+    <rect x="96" y="446" width="240" height="66" rx="14" class="deadNode"/>
+    <text x="216" y="486" font-size="19" text-anchor="middle" class="deadTxt">끝</text>
+  </g>
+  <!-- X 표시 -->
+  <line x1="120" y1="230" x2="312" y2="504" stroke="#C97B6E" stroke-width="4" stroke-linecap="round" opacity=".8"/>
+  <line x1="312" y1="230" x2="120" y2="504" stroke="#C97B6E" stroke-width="4" stroke-linecap="round" opacity=".8"/>
+  <text x="216" y="548" font-size="14" text-anchor="middle" fill="#C97B6E" font-weight="700">✕ 자판기 아님</text>
+  <text x="216" y="570" font-size="12.5" text-anchor="middle" class="ts">한 번 누르면 끝 — 그게 우리가 아는 방식이 아니다</text>
+
+  <!-- 오른쪽: AI와의 대화라면(순환 루프) -->
+  <rect x="700" y="150" width="190" height="38" rx="19" class="badgeOn"/>
+  <text x="795" y="175" font-size="15" text-anchor="middle" class="badgeOnTxt">AI와의 대화라면</text>
+
+  <!-- 루프 노드 4개(다이아몬드 배치: 상 우 하 좌) -->
+  <rect x="750" y="214" width="200" height="66" rx="14" class="liveNode"/>
+  <text x="850" y="250" font-size="18" text-anchor="middle" class="liveTxt">묻는다</text>
+
+  <rect x="1030" y="316" width="180" height="66" rx="14" class="liveNode"/>
+  <text x="1120" y="356" font-size="18" text-anchor="middle" class="liveTxt">받는다</text>
+
+  <rect x="750" y="466" width="200" height="78" rx="14" class="liveNode"/>
+  <text x="850" y="498" font-size="18" text-anchor="middle" class="liveTxt">고쳐 말한다</text>
+  <text x="850" y="520" font-size="13" text-anchor="middle" class="liveSub">"더 짧게" · "표로"</text>
+
+  <rect x="590" y="316" width="180" height="66" rx="14" class="liveNode"/>
+  <text x="680" y="356" font-size="18" text-anchor="middle" class="liveTxt">다시 받는다</text>
+
+  <!-- 순환 화살표: 묻는다→받는다→고쳐 말한다→다시 받는다→(닫힘, 마젠타)묻는다 -->
+  <path d="M950 260 C 1010 275, 1050 295, 1080 320" class="loopArrow" marker-end="url(#mc)"/>
+  <path d="M1110 383 C 1080 415, 1000 445, 950 470" class="loopArrow" marker-end="url(#mc)"/>
+  <path d="M750 490 C 700 465, 670 420, 675 384" class="loopArrow" marker-end="url(#mc)"/>
+  <path d="M700 318 C 730 290, 770 270, 800 256" class="closeArrow" marker-end="url(#mp)"/>
+
+  <text x="620" y="270" font-size="13.5" text-anchor="middle" fill="#DB2777" font-weight="700">마음에 들 때까지 ↺</text>
+
+  <!-- 보조 문구 -->
+  <rect x="230" y="606" width="820" height="66" rx="18" fill="#FFFFFF" stroke="#EAE4DA" stroke-width="1.6"/>
+  <text x="640" y="646" font-size="19" text-anchor="middle" font-weight="700" fill="#0E7490">AI는 자판기가 아니라 대화 상대다</text>
+</svg>
