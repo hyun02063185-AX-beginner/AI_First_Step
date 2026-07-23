@@ -265,6 +265,55 @@
   --font-mono:'Space Grotesk','IBM Plex Sans KR',sans-serif;
 }
 
+/* --- sunset : 노을 (이 사이트 최고 Lv 보상 — "첫 출근을 마치고 퇴근길에 보는 노을".
+   office(아침)→노을(저녁)의 하루 서사. fxLevel calm과 어울리게 절제된 톤·연출) --- */
+:root[data-skin="sunset"]{
+  --bg:#2B2140;
+  --bg-2:#241A38;
+  --page-bg:linear-gradient(180deg,#241A38 0%,#2B2140 55%,#3D2A3E 100%);
+  --vignette:radial-gradient(120% 90% at 50% 100%,rgba(249,115,22,.10) 0%,transparent 55%);
+
+  --ink:#F5EFE6;
+  --ink-dim:#A99BB5;
+
+  --cyan:#F59E0B;      /* 노을 앰버 — 기본 인터랙션 색 */
+  --violet:#C4B5FD;
+  --pink:#F97316;      /* 코럴 포인트 */
+  --green:#7E8B6D;
+  --accent:var(--cyan);
+
+  --glass:rgba(245,239,230,.06);        /* 반투명 어두운 카드(surface) */
+  --glass-brd:rgba(245,158,11,.22);
+  --card-bg:linear-gradient(160deg,#332648,#241A38);
+  --overlay-bg:radial-gradient(120% 100% at 50% 60%,rgba(43,33,64,.88),rgba(30,22,48,.96));
+  --track:rgba(245,158,11,.14);
+  --tint:rgba(249,115,22,.08);
+
+  --shadow:0 8px 30px rgba(0,0,0,.35);
+  --shadow-hover:0 12px 40px rgba(0,0,0,.45);
+  --btn-shadow:0 0 0 1px rgba(245,158,11,.2),0 10px 30px rgba(0,0,0,.35);
+  --btn-hover-shadow:0 6px 20px rgba(245,158,11,.18);
+
+  --radius:14px;
+  --radius-pill:999px;
+  --border-w:1px;
+  --blur:none;
+  --spin:0;
+
+  /* 입장 워프 색 — sunset: 미색 코어 + 앰버/코럴 링(calm이라 워프 자체는 페이드로 대체되지만 값은 채워둔다) */
+  --warp-a:#FDEBD3; --warp-b:#F59E0B; --warp-c:#F97316;
+
+  --glow-accent-text:0 0 14px rgba(245,158,11,.3);
+  --glow-title:drop-shadow(0 0 30px rgba(249,115,22,.2));
+  --glow-box-accent:0 0 18px rgba(245,158,11,.2);
+  --glow-card-accent:0 0 24px rgba(249,115,22,.18);
+  --glow-bar:0 0 10px rgba(245,158,11,.35);
+
+  --font-display:'Pretendard',system-ui,-apple-system,sans-serif;
+  --font-body:'Pretendard',system-ui,-apple-system,'Malgun Gothic',sans-serif;
+  --font-mono:'Pretendard',system-ui,sans-serif;
+}
+
 /* --- sayu : 사유의 방 (따뜻한 어둠 · 흙빛 · 별빛 골드) --- */
 :root[data-skin="sayu"]{
   --bg:#0F0B09;                    /* 어둠 내려앉은 따뜻한 흑갈 */
@@ -544,6 +593,7 @@ body{
   repeating-linear-gradient(0deg,rgba(125,211,252,.65) 0 1px,transparent 1px 6px),
   repeating-linear-gradient(90deg,rgba(125,211,252,.65) 0 1px,transparent 1px 6px)}
 .skin-sw--sayu{background:radial-gradient(circle at 50% 28%,#E8C98A 0%,#B4664A 46%,#0F0B09 84%)}
+.skin-sw--sunset{background:radial-gradient(circle at 50% 78%,#F97316 0%,#F59E0B 24%,#2B2140 62%,#241A38 100%)}
 
 /* 입장 워프 — 화면 중앙의 작은 정원(正圓)이 전체 화면으로 차분히 퍼진다.
    흰빛(빛)으로 빨려드는 느낌이 주가 되도록 코어(--warp-a)를 넓게,

@@ -22,8 +22,9 @@ const SITE_CONFIG = {
   enterHint: "클릭하여 첫 출근을 시작합니다",
 
   defaultSkin: "office",
-  availableSkins: ["office", "paper", "neon"],   // 3종으로 슬림
-  skinGating: false,                 // 입문 과정 — Lv로 스킨을 잠그지 않는다(처음부터 3종 전부)
+  availableSkins: ["office", "paper", "neon", "sunset"],
+  maxLevel: 3,                       // 회독 레벨 상한(게이미피케이션_Lv3_지시서 ②)
+  skinUnlockLevel: { office: 1, paper: 1, neon: 2, sunset: 3 },   // 게이팅 적용으로 전환(지시서 ③ — 이전 skinGating:false 정책 폐기)
 
   introThemes: ["snow", "sakura"],   // 차분한 2종만(별똥별·불꽃놀이 제외)
 
@@ -33,8 +34,8 @@ const SITE_CONFIG = {
   finalMessage: "오늘 배운 것을, 내일 책상에서",
   boxLabel: "구역",                  // 상자 라벨 대체(본진 기본값 "상자") — room.js가 fallback으로 읽는다
 
-  // Lv1~5 칭호 — 본진 기본값(Wanderer...) 대신 온보딩 서사로.
-  rankTitles: ["", "인턴", "신입", "주임", "선임", "에이스"],
+  // Lv1~3 칭호 — 본진 기본값(Wanderer...) 대신 온보딩 서사로(5단계에서 압축, 지시서 ②).
+  rankTitles: ["", "인턴", "주임", "에이스"],
   // 20강 완주 축하 오버레이 문구(본진 기본 "훌륭히 완주하셨습니다." 대신)
   completionTitle: "첫 출근을 마쳤습니다.",
   completionTitleMastered: "이제 이 사무실의 에이스입니다.",
