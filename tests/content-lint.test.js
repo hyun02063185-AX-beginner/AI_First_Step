@@ -12,7 +12,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 
 const ROOT = path.join(__dirname, "..");
-const { CURRICULUM } = require(path.join(ROOT, "js", "data.js"));
+const { CURRICULUM, PRACTICE_MISSIONS } = require(path.join(ROOT, "js", "data.js"));
 
 /* ---------- 사이트별 조정 상수 (여기만 바꾸면 다른 사이트에도 재사용 가능) ---------- */
 const LECTURE_COUNT = 20;
@@ -77,6 +77,42 @@ test("각 강 id는 1.." + LECTURE_COUNT + " 범위에서 중복 없이 등장",
   const unique = new Set(ids);
   assert.equal(unique.size, ids.length, "중복 id 존재: " + JSON.stringify(ids));
   for (let i = 1; i <= LECTURE_COUNT; i++) assert.ok(unique.has(i), `id ${i} 누락`);
+});
+
+/* ---------- 연습 책상 존① 미션 배열(PRACTICE_MISSIONS) 린트 ---------- */
+test("PRACTICE_MISSIONS 배열 존재 · 강의 수와 동일(" + LECTURE_COUNT + "개)", () => {
+  assert.ok(Array.isArray(PRACTICE_MISSIONS), "PRACTICE_MISSIONS가 배열이 아님");
+  assert.equal(PRACTICE_MISSIONS.length, LECTURE_COUNT);
+});
+
+test("PRACTICE_MISSIONS — 각 lectureId는 1.." + LECTURE_COUNT + " 범위에서 중복 없이 등장", () => {
+  const ids = PRACTICE_MISSIONS.map(m => m.lectureId);
+  const unique = new Set(ids);
+  assert.equal(unique.size, ids.length, "중복 lectureId 존재: " + JSON.stringify(ids));
+  for (let i = 1; i <= LECTURE_COUNT; i++) assert.ok(unique.has(i), `lectureId ${i} 누락`);
+});
+
+test("PRACTICE_MISSIONS — boxIndex가 CURRICULUM.boxes 범위 안 · text 비어있지 않음", () => {
+  const errors = [];
+  PRACTICE_MISSIONS.forEach((m, i) => {
+    if (!Number.isInteger(m.boxIndex) || m.boxIndex < 0 || m.boxIndex >= CURRICULUM.boxes.length)
+      errors.push(`PRACTICE_MISSIONS[${i}](lectureId ${m.lectureId}): boxIndex ${m.boxIndex}가 범위(0..${CURRICULUM.boxes.length - 1}) 밖`);
+    if (!m.text || typeof m.text !== "string" || !m.text.trim())
+      errors.push(`PRACTICE_MISSIONS[${i}](lectureId ${m.lectureId}): text 없음`);
+  });
+  assert.deepEqual(errors, [], errors.join("\n"));
+});
+
+test("PRACTICE_MISSIONS — boxIndex가 실제 CURRICULUM 상자 배치 순서와 일치", () => {
+  // lectureId → 실제 CURRICULUM에서의 상자 인덱스를 역산해 대조(상자 구성이 바뀌어도 늘 정합하도록)
+  const boxOf = {};
+  CURRICULUM.boxes.forEach((box, bi) => box.lectures.forEach(lec => { boxOf[lec.id] = bi; }));
+  const errors = [];
+  PRACTICE_MISSIONS.forEach(m => {
+    if (boxOf[m.lectureId] !== m.boxIndex)
+      errors.push(`lectureId ${m.lectureId}: PRACTICE_MISSIONS.boxIndex=${m.boxIndex} vs 실제=${boxOf[m.lectureId]}`);
+  });
+  assert.deepEqual(errors, [], errors.join("\n"));
 });
 
 CURRICULUM.boxes.forEach((box, bi) => {

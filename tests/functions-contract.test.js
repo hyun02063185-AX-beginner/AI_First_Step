@@ -103,6 +103,32 @@ test("track — 정상 POST → 204(스텁 insert 호출 확인)", async () => {
   });
 });
 
+/* ---------- track.js — 연습 책상 이벤트(mission_stamp·kit_updated) ---------- */
+
+test("track — mission_stamp POST → 204(연습 책상 존① 스탬프)", async () => {
+  await withEnv({ SUPABASE_URL: "https://x.supabase.co", SUPABASE_SERVICE_KEY: "test-key" }, async () => {
+    const stub = stubFetch();
+    try {
+      const body = JSON.stringify({ code: "A반-01", event_type: "mission_stamp", course: "aifirst", payload: { lectureId: 7 } });
+      const res = await track.handler(makeEvent({ body }));
+      assert.equal(res.statusCode, 204);
+      assert.equal(stub.calls.length, 1);
+    } finally { stub.restore(); }
+  });
+});
+
+test("track — kit_updated POST → 204(연습 책상 존③ 키트 저장)", async () => {
+  await withEnv({ SUPABASE_URL: "https://x.supabase.co", SUPABASE_SERVICE_KEY: "test-key" }, async () => {
+    const stub = stubFetch();
+    try {
+      const body = JSON.stringify({ code: "A반-01", event_type: "kit_updated", course: "aifirst", payload: { fields: ["chatbot", "prompts"], missionCount: 3 } });
+      const res = await track.handler(makeEvent({ body }));
+      assert.equal(res.statusCode, 204);
+      assert.equal(stub.calls.length, 1);
+    } finally { stub.restore(); }
+  });
+});
+
 /* ---------- stats.js ---------- */
 
 test("stats — 키 없음 → 401", async () => {
@@ -130,6 +156,25 @@ test("stats — 정상 키 → 스텁 데이터 기반 200 정상 응답", async
       assert.equal(res.statusCode, 200);
       const data = JSON.parse(res.body);
       assert.equal(data.aggregate.studentCount, 1);
+    } finally { stub.restore(); }
+  });
+});
+
+test("stats — mission_stamp·kit_updated이 학생 요약에 집계됨", async () => {
+  await withEnv({ ADMIN_KEY: "secret-key", SUPABASE_URL: "https://x.supabase.co", SUPABASE_SERVICE_KEY: "test-key" }, async () => {
+    const rows = [
+      { code: "A반-01", event_type: "mission_stamp", payload: { lectureId: 3 }, created_at: "2026-07-23T09:00:00Z", course: "aifirst" },
+      { code: "A반-01", event_type: "mission_stamp", payload: { lectureId: 7 }, created_at: "2026-07-23T09:05:00Z", course: "aifirst" },
+      { code: "A반-01", event_type: "kit_updated", payload: { fields: ["chatbot", "prompts"], missionCount: 2 }, created_at: "2026-07-23T09:10:00Z", course: "aifirst" }
+    ];
+    const stub = stubFetch({ supabaseRows: rows });
+    try {
+      const res = await stats.handler(makeEvent({ method: "GET", headers: { "x-admin-key": "secret-key" }, query: { course: "aifirst" } }));
+      assert.equal(res.statusCode, 200);
+      const data = JSON.parse(res.body);
+      const student = data.students.find(s => s.code === "A반-01");
+      assert.equal(student.missionCount, 2);
+      assert.deepEqual(student.kit.fields, ["chatbot", "prompts"]);
     } finally { stub.restore(); }
   });
 });

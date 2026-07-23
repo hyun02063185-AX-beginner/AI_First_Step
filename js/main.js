@@ -174,7 +174,8 @@
     start: document.getElementById("scene-start"),
     room: document.getElementById("scene-room"),
     slides: document.getElementById("scene-slides"),
-    practice: document.getElementById("scene-practice")
+    practice: document.getElementById("scene-practice"),
+    desk: document.getElementById("scene-desk")
   };
   function goScene(name) {
     Object.values(scenes).forEach(s => s.classList.remove("is-active"));
@@ -216,6 +217,7 @@
         case "start":    return { name: "start" };
         case "reset":    return { name: "reset" };
         case "practice": return { name: "practice" };
+        case "desk":    return { name: "desk" };
         case "room":    return { name: "room" };
         case "box":     return { name: "box", box: Number(parts[1]) || 0 };
         case "lecture": return { name: "lecture", id: Number(parts[1]),
@@ -234,6 +236,7 @@
         case "reset": {                       // #/reset → Lv·진행도 초기화 후 인트로로
           try { localStorage.removeItem(LEVEL_KEY); localStorage.removeItem(STORE_KEY); localStorage.removeItem(RESUME_KEY); localStorage.removeItem("ax_server_session"); } catch (e) {}
           if (window.Telemetry) Telemetry.clearCode();   // 수강 코드도 함께 초기화
+          if (window.Desk) Desk.reset();                 // 연습 책상(스탬프·키트)도 함께 초기화
           Level.n = 1; Level.save();          // Lv1부터 다시 시작
           Progress.seen.clear(); Progress.save();
           refreshSkinLocks(); Skin.set(SITE_CONFIG.defaultSkin, true); updateHUD();
@@ -245,10 +248,14 @@
         case "intro":
           bgIntro(); goScene("intro"); break;
         case "start":
-          bgSkin(); goScene("start"); if (window.refreshPracticeDoor) window.refreshPracticeDoor(); break;
+          bgSkin(); goScene("start"); if (window.refreshPracticeDoor) window.refreshPracticeDoor();
+          if (window.refreshDeskDoor) window.refreshDeskDoor(); break;
         case "practice":
           if (SITE_CONFIG.practiceRoom === false) { Router.go("room"); return; }  // 이 사이트엔 없는 기능
           bgSkin(); goScene("practice"); if (window.openPractice) window.openPractice(); break;
+        case "desk":
+          if (SITE_CONFIG.practiceDesk !== true) { Router.go("room"); return; }  // 명시적으로 켠 사이트만(데이터 의존)
+          bgSkin(); goScene("desk"); if (window.openDesk) window.openDesk(); break;
         case "room":
           bgSkin(); goScene("room"); showBoxes(); break;
         case "box":

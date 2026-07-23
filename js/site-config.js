@@ -30,6 +30,7 @@ const SITE_CONFIG = {
 
   fxLevel: "calm",                   // 워프·폭죽·상자 등장연출을 페이드로(톤: 밝음·연출 절제)
   practiceRoom: false,               // 진단실 없음 — 입장 화면·라우트에서 완전히 숨김
+  practiceDesk: true,                // 연습 책상 — 이 사이트 고유 실습 공간(Lv1부터 상시 노출, 게이팅 없음)
 
   finalMessage: "오늘 배운 것을, 내일 책상에서",
   boxLabel: "구역",                  // 상자 라벨 대체(본진 기본값 "상자") — room.js가 fallback으로 읽는다

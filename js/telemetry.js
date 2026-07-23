@@ -88,6 +88,20 @@
   function checkup(scores, lowest) {
     send("checkup_result", { scores: scores || {}, lowest: lowest || "" });
   }
+  function missionStamp(lectureId) {
+    const k = "mission:" + lectureId;
+    if (sentOnce.has(k)) return;             // 같은 미션 재전송 안 함(해제는 애초에 호출하지 않음)
+    sentOnce.add(k);
+    send("mission_stamp", { lectureId: lectureId });
+  }
+  const kitFieldsSent = new Set();           // 세션당 "항목별" 1회(과도 전송 방지)
+  function kitUpdated(filledFields, missionCount) {
+    const fields = Array.isArray(filledFields) ? filledFields : [];
+    const fresh = fields.filter(f => !kitFieldsSent.has(f));
+    if (!fresh.length) return;               // 이미 보낸 항목만 다시 채워진 경우는 스킵
+    fresh.forEach(f => kitFieldsSent.add(f));
+    send("kit_updated", { fields: fields, missionCount: missionCount || 0 });
+  }
 
   /* ---------- UI: 입장 화면 코드 입력 + 🎫 아이콘↔뱃지 전환 ---------- */
   // 코드 미등록 = 🎫 아이콘 / 등록 = 같은 자리에 코드 텍스트 뱃지("A반-07")로 바뀐다.
@@ -175,6 +189,8 @@
     diagnosis: diagnosis,
     proposal: proposal,
     checkup: checkup,
+    missionStamp: missionStamp,
+    kitUpdated: kitUpdated,
     clearCode: clearCode,     // #/reset 연동
     refreshUI: refreshUI
   };

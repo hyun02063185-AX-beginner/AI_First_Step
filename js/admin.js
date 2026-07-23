@@ -391,6 +391,8 @@
     parts.push('<div class="admin-detail-row"><span>완료 강의</span><b>' + s.completedLectures.length + '/' + totalLectures() + '</b></div>');
     parts.push('<div class="admin-detail-chips">' + (s.completedLectures.map(id => '<span class="admin-chip">' + String(id).padStart(2, "0") + '강</span>').join("") || '<span class="admin-empty">없음</span>') + '</div>');
     parts.push('<div class="admin-detail-row"><span>제안서</span><b>' + (s.proposal ? "완성 ✓" : "미완성") + '</b></div>');
+    parts.push('<div class="admin-detail-row"><span>연습 책상</span><b>미션 ' + (s.missionCount || 0) + '/20 · 키트 ' +
+      (s.kit ? s.kit.fields.length : 0) + '/3</b></div>');
 
     const lit = s.diagnosis.literacy;
     parts.push('<h4 class="admin-detail-h">AI 리터러시</h4>' + (lit ?

@@ -78,6 +78,16 @@
         </span>
         <span class="pdoor-arrow">→</span>
       </button>
+
+      <!-- 연습 책상 입장 문 — Lv1부터 상시 노출(게이팅 없음). desk.js가 표시 여부를 결정한다. -->
+      <button id="desk-door" class="pdoor" type="button" hidden>
+        <span class="pdoor-ic">📒</span>
+        <span class="pdoor-txt">
+          <span class="pdoor-t">연습 책상</span>
+          <span class="pdoor-state">미션 · 프롬프트 조립 · 나의 시작 키트</span>
+        </span>
+        <span class="pdoor-arrow">→</span>
+      </button>
     </div>
   </section>
 
@@ -205,6 +215,9 @@
   <!-- ================= SCENE 4 : 실습실 (목업) ================= -->
   <section id="scene-practice" class="scene"><!-- practice.js 렌더 --></section>
 
+  <!-- ================= SCENE 5 : 연습 책상 ================= -->
+  <section id="scene-desk" class="scene"><!-- desk.js 렌더 --></section>
+
   <!-- scene 밖(body 직계)에 둔다: .scene 은 transform 전환이 걸려 있어
        내부에 두면 position:fixed 의 컨테이닝 블록이 씬으로 바뀌어 뷰포트 기준 고정이 깨진다 -->
   <div id="rotate-hint" class="rotate-hint" hidden>
@@ -247,6 +260,7 @@
   <script src="js/main.js"></script>
   <script src="js/intro.js"></script>
   <script src="js/telemetry.js"></script>
+  <script src="js/desk.js"></script>
   <script src="js/admin.js"></script>
 </body>
 </html>

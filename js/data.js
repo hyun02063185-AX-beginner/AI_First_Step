@@ -1783,9 +1783,39 @@ function placeholderDeck(num, title, subtitle) {
   ];
 }
 
+/* =========================================================================
+   PRACTICE_MISSIONS — 연습 책상 존① "미션 스탬프판"용 미션 20개.
+   각 강의 📝 과제 슬라이드에서 파생하되, data.js의 과제 슬라이드에서 직접 파생하지
+   않는다(존① 문구를 독립적으로 다듬을 수 있게) — 초기값은 각 강 📝 과제와 동일하게 작성.
+   boxIndex는 CURRICULUM.boxes의 인덱스(0~3)와 같아, 존①의 4색 그룹핑에 그대로 쓴다.
+   (order/연습책상_지시서.md 존① 산출물)
+   ========================================================================= */
+const PRACTICE_MISSIONS = [
+  { lectureId: 1,  boxIndex: 0, text: "퇴근 전, 오늘 만난 AI 3개를 메모해보세요" },
+  { lectureId: 2,  boxIndex: 0, text: "스팸함을 열어 필터가 잡아낸 메일 하나를 구경해보세요 — AI의 작품입니다" },
+  { lectureId: 3,  boxIndex: 0, text: '아무 AI 챗봇에 "우리 팀 회식 공지 한 줄 써줘"를 시켜보세요' },
+  { lectureId: 4,  boxIndex: 0, text: '내 업무에서 "AI에게 시킬 일" 1개를 골라두세요 (미팅룸에서 씁니다)' },
+  { lectureId: 5,  boxIndex: 0, text: "처음 본 용어 1개를 내 말로 한 줄 적어보세요" },
+  { lectureId: 6,  boxIndex: 1, text: "오늘 업무 중 궁금한 것 하나를 그 창에 물어보세요 — 이번엔 업무로" },
+  { lectureId: 7,  boxIndex: 1, text: '골라둔 "시킬 일"을 재료 3줄과 함께 시켜보세요' },
+  { lectureId: 8,  boxIndex: 1, text: "아무 요청이나 하고, 후속 한마디를 최소 3번 이어가보세요" },
+  { lectureId: 9,  boxIndex: 1, text: 'AI에게 아무 통계나 묻고 "출처 알려줘"까지 이어가보세요' },
+  { lectureId: 10, boxIndex: 1, text: "단짝 챗봇을 정하고, 즐겨찾기/첫 화면에 고정하세요" },
+  { lectureId: 11, boxIndex: 2, text: "미뤄둔 메시지 1건을 초안부터 받아보세요" },
+  { lectureId: 12, boxIndex: 2, text: '긴 자료 하나를 "핵심 3줄"로 받아보세요 — 오늘 받은 게 없다면 지난주 회의록이나 안 읽은 뉴스레터도 좋습니다' },
+  { lectureId: 13, boxIndex: 2, text: '다음 회의 전, "예상 질문 10개"를 뽑아보세요' },
+  { lectureId: 14, boxIndex: 2, text: "최근 보낸 메시지 1건을 다른 톤으로 바꿔보세요" },
+  { lectureId: 15, boxIndex: 2, text: "이번 주 업무 하나를 골라 11~14강 중 하나를 적용해보세요" },
+  { lectureId: 16, boxIndex: 3, text: '자주 넣는 자료 1종에서 "지울 것" 목록을 만들어보세요' },
+  { lectureId: 17, boxIndex: 3, text: '내 업무에서 "외부로 나가는 결과물" 목록을 3개 적어보세요' },
+  { lectureId: 18, boxIndex: 3, text: '주변에서 들은 AI 이야기 하나를 "사실/과장"으로 갈라보세요' },
+  { lectureId: 19, boxIndex: 3, text: "메모장을 하나 만들고, 지금까지 통했던 요청 하나를 붙여넣으세요" },
+  { lectureId: 20, boxIndex: 3, text: "내일 아침 첫 업무 하나를 AI와 함께 시작해보세요" }
+];
+
 /* Node 테스트 하네스(tests/content-lint.test.js)용 최소 export 심.
    브라우저에선 `module`이 없어 이 블록 자체가 실행되지 않는다 — 브라우저 동작에 0 영향.
    (엔진_경계.md 관점 참고: order/하네스_구축_지시서.md — 본진 이식 시 동일 패턴 필요.) */
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { CURRICULUM, placeholderDeck };
+  module.exports = { CURRICULUM, placeholderDeck, PRACTICE_MISSIONS };
 }

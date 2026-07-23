@@ -21,6 +21,8 @@ function summarizeStudent(code, events) {
   const diagnosis = {};   // kind → scores (desc 순서라 처음 만나는 것이 최신)
   let checkup = null;     // { scores, lowest } — 재검사해도 desc 순서상 처음 만나는 것이 최신
   let proposal = false;
+  const missions = new Set();   // 연습 책상 존① — 스탬프 찍은 lectureId
+  let kit = null;                // 연습 책상 존③ — { fields, missionCount } (desc 순서라 처음 만나는 것이 최신)
 
   for (const e of events) {
     if (!lastSeen || e.created_at > lastSeen) lastSeen = e.created_at;
@@ -37,6 +39,10 @@ function summarizeStudent(code, events) {
       if (!checkup) checkup = { scores: p.scores || {}, lowest: p.lowest || "" };
     } else if (e.event_type === "proposal_created") {
       proposal = true;
+    } else if (e.event_type === "mission_stamp") {
+      if (p.lectureId != null) missions.add(p.lectureId);
+    } else if (e.event_type === "kit_updated") {
+      if (!kit) kit = { fields: Array.isArray(p.fields) ? p.fields : [], missionCount: typeof p.missionCount === "number" ? p.missionCount : 0 };
     }
   }
 
@@ -48,7 +54,9 @@ function summarizeStudent(code, events) {
     course,
     diagnosis,
     checkup,
-    proposal
+    proposal,
+    missionCount: missions.size,
+    kit
   };
 }
 
