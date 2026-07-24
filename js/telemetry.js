@@ -190,6 +190,24 @@
         hiddenToast("🎬 무대 뒤: 경험판 " + (on ? "켜짐" : "꺼짐"));
         reloadSoon();
       }) },
+    { label: "판.자영업", available: () => !!(SITE_CONFIG.personas && SITE_CONFIG.personas.owner), match: v => v === "판.자영업",
+      run: () => closeCodeLayerThen(() => {
+        window.App && App.cheatSetPersona && App.cheatSetPersona("owner");
+        hiddenToast("🎬 무대 뒤: 최사장판으로 전환");
+        reloadSoon();
+      }) },
+    { label: "판.대학생", available: () => !!(SITE_CONFIG.personas && SITE_CONFIG.personas.student), match: v => v === "판.대학생",
+      run: () => closeCodeLayerThen(() => {
+        window.App && App.cheatSetPersona && App.cheatSetPersona("student");
+        hiddenToast("🎬 무대 뒤: 박선배판으로 전환");
+        reloadSoon();
+      }) },
+    { label: "판.기본", available: () => true, match: v => v === "판.기본",
+      run: () => closeCodeLayerThen(() => {
+        window.App && App.cheatSetPersona && App.cheatSetPersona("");
+        hiddenToast("🎬 무대 뒤: 기본판으로 복귀");
+        reloadSoon();
+      }) },
     { label: "테마", available: () => true, match: v => v === "테마",
       run: () => {
         window.CodeLayer && window.CodeLayer.close();

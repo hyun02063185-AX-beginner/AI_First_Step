@@ -24,7 +24,9 @@
      #/reset이 전부 함께 정리한다(아래 Router.handle의 reset 케이스). */
   const CHEAT_SKIN_KEY = "ax_cheat_skin_unlock";
   const CHEAT_VARIANT_KEY = "ax_cheat_variant_personal";
+  const CHEAT_PERSONA_KEY = "ax_cheat_persona";   // 무대뒤.판.* — 값은 페르소나 키("owner" 등) 또는 없음
   function cheatFlag(key) { try { return localStorage.getItem(key) === "1"; } catch (e) { return false; } }
+  function cheatPersonaValue() { try { return localStorage.getItem(CHEAT_PERSONA_KEY) || ""; } catch (e) { return ""; } }
 
   /* ---------- 콘텐츠 variant — 경험판 스위치 + 페르소나 스위치 ----------
      ?variant=personal → (기존) 7·8강처럼 slidesPersonal이 있는 강의는 경험판으로 렌더.
@@ -37,8 +39,11 @@
   const VARIANT_RAW = (location.search.match(/[?&]variant=([^&]+)/) || [])[1] || "";
   const VARIANT_PERSONAL = VARIANT_RAW === "personal" || cheatFlag(CHEAT_VARIANT_KEY);
   window.__variantPersonal = VARIANT_PERSONAL;   // slides.js 로드 분기에서 참조(기존)
+  // 우선순위: ?variant=<키>(URL) > 무대뒤.판.*(치트, localStorage) > default.
+  const CHEAT_PERSONA = cheatPersonaValue();
   const PERSONA_KEY = (VARIANT_RAW && !VARIANT_PERSONAL && SITE_CONFIG.personas && SITE_CONFIG.personas[VARIANT_RAW])
-    ? VARIANT_RAW : "default";
+    ? VARIANT_RAW
+    : (CHEAT_PERSONA && SITE_CONFIG.personas && SITE_CONFIG.personas[CHEAT_PERSONA]) ? CHEAT_PERSONA : "default";
   window.__persona = PERSONA_KEY;                // slides.js 합성 로직·HUD 뱃지·텔레메트리가 참조(신규)
 
   /* 강의의 "실제 렌더용 슬라이드"를 계산 — 페르소나 오버라이드를 base 위에 합성한다.
@@ -246,6 +251,7 @@
           try {
             localStorage.removeItem(LEVEL_KEY); localStorage.removeItem(STORE_KEY); localStorage.removeItem(RESUME_KEY); localStorage.removeItem("ax_server_session");
             localStorage.removeItem(CHEAT_SKIN_KEY); localStorage.removeItem(CHEAT_VARIANT_KEY); localStorage.removeItem("ax_cheat_practice_unlock");
+            localStorage.removeItem(CHEAT_PERSONA_KEY);
           } catch (e) {}
           if (window.Telemetry) Telemetry.clearCode();   // 수강 코드도 함께 초기화
           if (window.Desk) Desk.reset();                 // 연습 책상(스탬프·키트)도 함께 초기화
@@ -424,6 +430,9 @@
     cheatSkinUnlock(on) {
       try { if (on) localStorage.setItem(CHEAT_SKIN_KEY, "1"); else localStorage.removeItem(CHEAT_SKIN_KEY); } catch (e) {}
       refreshSkinLocks();
+    },
+    cheatSetPersona(key) {                        // 무대뒤.판.* — 값 계산은 페이지 로드 시점이라 반영엔 새로고침 필요
+      try { if (key) localStorage.setItem(CHEAT_PERSONA_KEY, key); else localStorage.removeItem(CHEAT_PERSONA_KEY); } catch (e) {}
     },
     cheatSetLevel(n) {
       n = Math.max(1, Math.min(MAX_LEVEL, n | 0));

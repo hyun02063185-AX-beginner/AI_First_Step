@@ -13,6 +13,7 @@ const path = require("node:path");
 
 const ROOT = path.join(__dirname, "..");
 const { CURRICULUM, PRACTICE_MISSIONS } = require(path.join(ROOT, "js", "data.js"));
+const { SITE_CONFIG } = require(path.join(ROOT, "js", "site-config.js"));
 
 /* ---------- 사이트별 조정 상수 (여기만 바꾸면 다른 사이트에도 재사용 가능) ---------- */
 const LECTURE_COUNT = 20;
@@ -111,6 +112,21 @@ test("PRACTICE_MISSIONS — boxIndex가 실제 CURRICULUM 상자 배치 순서�
   PRACTICE_MISSIONS.forEach(m => {
     if (boxOf[m.lectureId] !== m.boxIndex)
       errors.push(`lectureId ${m.lectureId}: PRACTICE_MISSIONS.boxIndex=${m.boxIndex} vs 실제=${boxOf[m.lectureId]}`);
+  });
+  assert.deepEqual(errors, [], errors.join("\n"));
+});
+
+test("PRACTICE_MISSIONS — variants(있으면) 키가 등록된 페르소나 · 값이 빈 문자열 아님", () => {
+  const validPersonas = new Set(Object.keys(SITE_CONFIG.personas || {}));
+  const errors = [];
+  PRACTICE_MISSIONS.forEach(m => {
+    if (!m.variants) return;
+    Object.entries(m.variants).forEach(([key, val]) => {
+      if (!validPersonas.has(key))
+        errors.push(`lectureId ${m.lectureId}: variants.${key}는 SITE_CONFIG.personas에 없는 키`);
+      if (!val || typeof val !== "string" || !val.trim())
+        errors.push(`lectureId ${m.lectureId}: variants.${key}가 비어있음`);
+    });
   });
   assert.deepEqual(errors, [], errors.join("\n"));
 });

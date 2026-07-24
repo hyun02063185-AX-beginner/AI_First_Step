@@ -29,6 +29,13 @@
   const esc = t => String(t == null ? "" : t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   const TOTAL_MISSIONS = (typeof PRACTICE_MISSIONS !== "undefined" ? PRACTICE_MISSIONS.length : 20);
 
+  // 페르소나별 미션 문구 — slidesVariants와 같은 폴백 원칙(없으면 기본 문구).
+  // window.__persona는 main.js가 ?variant= 또는 무대뒤.판.* 치트로 세팅한다.
+  function missionText(m) {
+    const persona = window.__persona;
+    return (persona && m.variants && m.variants[persona]) || m.text;
+  }
+
   function kitFilledFields() {
     const f = [];
     if (kit.chatbot && kit.chatbot.trim()) f.push("chatbot");
@@ -101,7 +108,7 @@
     return `<div class="pr-card desk-mission ${d ? "done" : ""}">
       <span class="pr-card-body">
         <button type="button" class="desk-lec-link" data-goto="${m.lectureId}">${String(m.lectureId).padStart(2, "0")}강에서 배웠어요</button>
-        <span class="pr-card-tag">${esc(m.text)}</span>
+        <span class="pr-card-tag">${esc(missionText(m))}</span>
       </span>
       <button type="button" class="desk-stamp-btn ${d ? "on" : ""}" data-stamp="${m.lectureId}">${d ? "완료 ✓" : "완료 스탬프"}</button>
     </div>`;
@@ -120,10 +127,27 @@
      존② 프롬프트 조립대 (07강 "재료 세 가지" 실습)
      ===================================================================== */
   const PRESETS = [
-    { label: "메일 다듬기(11강)", sit: "미뤄둔 메일 답장을 써야 하는데", aud: "거래처 담당자에게", shape: "정중한 존댓말로, 3문단 이내" },
-    { label: "요약 요청(12강)", sit: "긴 회의록을 받았는데 핵심만 알고 싶어요", aud: "나 혼자 보려고", shape: "핵심 3줄 요약으로" },
-    { label: "아이디어 벽치기(13강)", sit: "다음 회의 전에 예상 질문을 준비해야 하는데", aud: "팀 회의에서 쓰려고", shape: "예상 질문 10개 리스트로" }
+    { label: "메일 다듬기(11강)", sit: "미뤄둔 메일 답장을 써야 하는데", aud: "거래처 담당자에게", shape: "정중한 존댓말로, 3문단 이내",
+      variants: { owner: { sit: "별점 2점 리뷰에 답글을 써야 하는데", aud: "불만 손님에게", shape: "사과와 개선 약속을 담아 변명 없이 3문장" } } },
+    { label: "요약 요청(12강)", sit: "긴 회의록을 받았는데 핵심만 알고 싶어요", aud: "나 혼자 보려고", shape: "핵심 3줄 요약으로",
+      variants: { owner: { sit: "지원사업 공고문을 받았는데 핵심만 알고 싶어요", aud: "혼자 확인하려고", shape: "신청 자격·기한·서류를 표로" } } },
+    { label: "아이디어 벽치기(13강)", sit: "다음 회의 전에 예상 질문을 준비해야 하는데", aud: "팀 회의에서 쓰려고", shape: "예상 질문 10개 리스트로",
+      variants: { owner: { sit: "다음 시즌 신메뉴 아이디어가 필요한데", aud: "가게에 새로 걸 메뉴를 정하려고", shape: "후보 10개 리스트로" } } }
   ];
+  // 프리셋도 미션과 같은 폴백 원칙(페르소나 전용 값이 있으면 그걸, 없으면 기본).
+  function presetFor(p) {
+    const persona = window.__persona;
+    const v = persona && p.variants && p.variants[persona];
+    return v ? { label: p.label, sit: v.sit, aud: v.aud, shape: v.shape } : p;
+  }
+  const BUILD_PLACEHOLDERS = {
+    default: { sit: "거래처에 납기 연장을 부탁해야 하는데", aud: "10년 거래한 부장님께", shape: "정중하지만 짧게, 5문장 안으로" },
+    owner: { sit: "이번 주 목요일 휴무 안내문 좀 써줘야 하는데", aud: "가게 손님들께", shape: "정중하지만 짧게, 3문장 안으로" }
+  };
+  function buildPlaceholders() {
+    const persona = window.__persona;
+    return (persona && BUILD_PLACEHOLDERS[persona]) || BUILD_PLACEHOLDERS.default;
+  }
   function assembleText(sit, aud, shape) {
     const s = (sit || "").trim(), a = (aud || "").trim(), f = (shape || "").trim();
     if (!s && !a && !f) return "";
@@ -134,11 +158,12 @@
     return parts.join(". ") + ".";
   }
   function buildView() {
+    const ph = buildPlaceholders();
     return `<p class="pr-floor-head">🧩 프롬프트 조립대 <span>재료 세 가지(07강)를 채우면 프롬프트가 조립돼요</span></p>
       <div class="desk-presets">${PRESETS.map((p, i) => `<button type="button" class="desk-preset" data-preset="${i}">${esc(p.label)}</button>`).join("")}</div>
-      <div class="pr-field"><label>상황</label><input class="pr-input pr-input--edit" id="bd-sit" placeholder="예: 거래처에 납기 연장을 부탁해야 하는데"></div>
-      <div class="pr-field"><label>대상</label><input class="pr-input pr-input--edit" id="bd-aud" placeholder="예: 10년 거래한 부장님께"></div>
-      <div class="pr-field"><label>원하는 모양</label><input class="pr-input pr-input--edit" id="bd-shape" placeholder="예: 정중하지만 짧게, 5문장 안으로"></div>
+      <div class="pr-field"><label>상황</label><input class="pr-input pr-input--edit" id="bd-sit" placeholder="예: ${esc(ph.sit)}"></div>
+      <div class="pr-field"><label>대상</label><input class="pr-input pr-input--edit" id="bd-aud" placeholder="예: ${esc(ph.aud)}"></div>
+      <div class="pr-field"><label>원하는 모양</label><input class="pr-input pr-input--edit" id="bd-shape" placeholder="예: ${esc(ph.shape)}"></div>
       <div class="desk-assembled" id="bd-out"><p class="axp-empty">세 칸을 채우면 여기에 완성 프롬프트가 조립돼요</p></div>
       <div class="pr-btnrow"><button type="button" class="pr-run" id="bd-copy" disabled>📋 복사</button><button type="button" class="pr-run pr-run--good" id="bd-save" disabled>🎒 내 키트에 저장</button></div>
       <p class="desk-hint">복사해서 내 챗봇에 붙여넣어 보세요 — 앱은 여기까지, 실행은 자기 챗봇에서.</p>`;
@@ -154,7 +179,7 @@
     }
     [sit, aud, shape].forEach(i => i.addEventListener("input", refresh));
     scene.querySelectorAll("[data-preset]").forEach(b => b.addEventListener("click", () => {
-      const p = PRESETS[+b.dataset.preset]; sit.value = p.sit; aud.value = p.aud; shape.value = p.shape; refresh();
+      const p = presetFor(PRESETS[+b.dataset.preset]); sit.value = p.sit; aud.value = p.aud; shape.value = p.shape; refresh();
     }));
     copyBtn.addEventListener("click", () => {
       try { navigator.clipboard.writeText(current()); } catch (e) {}

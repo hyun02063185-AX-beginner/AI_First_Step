@@ -50,3 +50,9 @@ const SITE_CONFIG = {
     owner:   { label: "자영업", badge: "O" }
   }
 };
+
+/* Node 테스트 하네스(tests/content-lint.test.js)용 최소 export 심 — data.js와 동일 패턴.
+   브라우저에선 `module`이 없어 이 블록 자체가 실행되지 않는다 — 브라우저 동작에 0 영향. */
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = { SITE_CONFIG };
+}
